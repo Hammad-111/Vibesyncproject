@@ -1,17 +1,30 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/components/EmailLogin.js
+import  { useState } from "react";
+import { sendSignInLinkToEmail } from "firebase/auth";
+import { auth } from "../firebase"; 
 import "./EmailLogin.css";
 
 const EmailLogin = () => {
   const [email, setEmail] = useState("");
-  const navigate = useNavigate();
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const actionCodeSettings = {
+    url: "http://localhost:3000/verify",
+    handleCodeInApp: true,
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email for OTP:", email);
-    // Later: API call for sending OTP
 
-    navigate("/dashboard");
+    try {
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      window.localStorage.setItem("emailForSignIn", email);
+      setSent(true);
+    } catch (err) {
+      console.error("Error sending email:", err.message);
+      setError("Failed to send email. Try again.");
+    }
   };
 
   return (
@@ -25,8 +38,11 @@ const EmailLogin = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Send OTP</button>
+        <button type="submit">Send Login Link</button>
       </form>
+
+      {sent && <p className="success-msg">Login link sent! Check your email.</p>}
+      {error && <p className="error-msg">{error}</p>}
     </div>
   );
 };
