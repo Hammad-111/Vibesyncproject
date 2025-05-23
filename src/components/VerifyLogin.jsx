@@ -1,28 +1,32 @@
-import { useEffect } from "react";
-import { auth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+// src/components/VerifyLogin.jsx
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth, isSignInWithEmailLink, signInWithEmailLink } from "../firebase";
 
-export default function VerifyLogin() {
+const VerifyLogin = () => {
+  const [message, setMessage] = useState("Verifying...");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = window.localStorage.getItem("emailForSignIn");
-      if (!email) {
-        email = window.prompt("Enter your email to confirm login:");
-      }
+    const email = window.localStorage.getItem("emailForSignIn");
 
+    if (isSignInWithEmailLink(auth, window.location.href) && email) {
       signInWithEmailLink(auth, email, window.location.href)
-        .then((result) => {
-          console.log("User signed in:", result.user);
+        .then(() => {
           window.localStorage.removeItem("emailForSignIn");
-          navigate("/dashboard");
+          setMessage("Login successful! Redirecting...");
+          setTimeout(() => navigate("/dashboard"), 2000);
         })
         .catch((error) => {
-          console.error("Error verifying email link", error);
+          console.error("Error verifying email link:", error);
+          setMessage("Invalid or expired link.");
         });
+    } else {
+      setMessage("Invalid login attempt.");
     }
   }, [navigate]);
 
-  return <div>Verifying login...</div>;
-}
+  return <div className="verify-container"><p>{message}</p></div>;
+};
+
+export default VerifyLogin;

@@ -1,7 +1,7 @@
-// src/components/EmailLogin.js
-import  { useState } from "react";
+// src/components/EmailLogin.jsx
+import { useState } from "react";
 import { sendSignInLinkToEmail } from "firebase/auth";
-import { auth } from "../firebase"; 
+import { auth } from "../firebase";
 import "./EmailLogin.css";
 
 const EmailLogin = () => {
@@ -10,26 +10,25 @@ const EmailLogin = () => {
   const [error, setError] = useState("");
 
   const actionCodeSettings = {
-    url: "http://localhost:3000/verify",
+    url: "https://vibe-sync-chat.vercel.app/verify",
     handleCodeInApp: true,
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       window.localStorage.setItem("emailForSignIn", email);
       setSent(true);
     } catch (err) {
       console.error("Error sending email:", err.message);
-      setError("Failed to send email. Try again.");
+      setError("Failed to send login link. Try again.");
     }
   };
 
   return (
     <div className="email-login-container">
-      <h2>Email Login</h2>
+      <h2>Login via Email Link</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -38,10 +37,10 @@ const EmailLogin = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Send Login Link</button>
+        <button type="submit">Send Link</button>
       </form>
 
-      {sent && <p className="success-msg">Login link sent! Check your email.</p>}
+      {sent && <p className="success-msg">Link sent! Check your email.</p>}
       {error && <p className="error-msg">{error}</p>}
     </div>
   );
