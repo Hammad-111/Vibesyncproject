@@ -1,0 +1,7 @@
+POST http://localhost:5000/api/chat/reply
+Content-Type: application/json
+
+{
+  "sessionId": "642a9b55efbcf8c123456789",
+  "userMessage": "Hey! How are you?"
+}
