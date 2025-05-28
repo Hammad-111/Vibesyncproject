@@ -1,15 +1,24 @@
 // src/App.jsx
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EmailLogin from "./components/EmailLogin";
 import Dashboard from "./components/Dashboard";
-//import EmailLogin from "./components/EmailLogin";;
 
 function App() {
+  const [user, setUser] = useState(null);
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <div>
+        {!user ? (
+          <EmailLogin onLogin={setUser} />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Dashboard user={user} onLogout={() => setUser(null)} />} />
+            <Route path="/dashboard" element={<Dashboard user={user} onLogout={() => setUser(null)} />} />
+          </Routes>
+        )}
+      </div>
     </BrowserRouter>
   );
 }
