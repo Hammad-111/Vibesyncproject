@@ -1,11 +1,14 @@
-import "./UserProfileCard.css";
+function UserProfileCard({ chat }) {
+  // Mock personality traits
+  const traits = ["Extroverted", "Humorous"];
 
-export default function UserProfileCard() {
   return (
     <div className="user-profile-card">
-      <h3>User Profile</h3>
-      <p>Name: Jane Doe</p>
-      <p>Personality: Friendly</p>
+      <h4>@{chat.username}</h4>
+      <p>Personality: {traits.join(", ")}</p>
+      {/* Add more user info as needed */}
     </div>
   );
 }
+
+export default UserProfileCard;

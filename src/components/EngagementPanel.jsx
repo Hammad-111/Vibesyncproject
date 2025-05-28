@@ -1,12 +1,13 @@
-import "./EngagementPanel.css";
+function EngagementPanel({ chat }) {
+  // Mock engagement score
+  const score = chat.engagement;
 
-export default function EngagementPanel() {
   return (
     <div className="engagement-panel">
-      <h3>Engagement</h3>
-      <p>Reply Speed: Fast</p>
-      <p>Emojis Used: 😍🔥</p>
-      <p>Interest Level: High</p>
+      <h5>Engagement Score</h5>
+      <div>{score}</div>
     </div>
   );
 }
+
+export default EngagementPanel;
