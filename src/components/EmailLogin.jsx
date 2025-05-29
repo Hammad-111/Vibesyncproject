@@ -1,9 +1,7 @@
-import React from "react";
-
 function InstagramLogin() {
   const handleInstagramLogin = () => {
     // Backend pe ek endpoint banaye jo Instagram OAuth flow start kare
-    window.location.href = "https://vibesyncproject.vercel.app/api/instagram/callback";
+    window.location.href = "http://localhost:8000/api/instagram/login";
   };
 
   return (
